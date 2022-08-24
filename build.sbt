@@ -18,6 +18,18 @@ inThisBuild(
   )
 )
 
+inThisBuild(
+  List(
+    publishTo := {
+      val base = "https://dig.iterative.works/maven/"
+      if (version.value.endsWith("SNAPSHOT"))
+        Some("snapshots" at base + "snapshots")
+      else Some("releases" at base + "releases")
+    },
+    credentials += Credentials(Path.userHome / ".sbt" / ".iw-credentials")
+  )
+)
+
 addCommandAlias("check", "; scalafmtSbtCheck; scalafmtCheckAll")
 addCommandAlias("fmt", "all scalafmtSbt scalafmtAll")
 addCommandAlias("fmtCheck", "all scalafmtSbtCheck scalafmtCheckAll")
