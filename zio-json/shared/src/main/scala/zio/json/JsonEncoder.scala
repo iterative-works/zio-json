@@ -428,7 +428,9 @@ private[json] trait EncoderLowPriority2 extends EncoderLowPriority3 {
     }
 
   // not implicit because this overlaps with encoders for lists of tuples
-  def keyValueIterable[K, A, T[X, Y] <: Iterable[(X, Y)]](implicit
+  // make the Iterable type explicit to avoid exceptions in getGenericReturnType with Scala 3+
+  type MapKV[K, V] = Iterable[(K, V)]
+  def keyValueIterable[K, A, T[X, Y] <: MapKV[X, Y]](implicit
     K: JsonFieldEncoder[K],
     A: JsonEncoder[A]
   ): JsonEncoder[T[K, A]] = new JsonEncoder[T[K, A]] {
